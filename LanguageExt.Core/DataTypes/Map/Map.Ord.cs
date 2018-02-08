@@ -22,7 +22,9 @@ namespace LanguageExt
     public struct Map<OrdK, K, V> :
         IEnumerable<(K Key, V Value)>,
         IEquatable<Map<OrdK, K, V>>,
-        IComparable<Map<OrdK, K, V>>
+        IComparable<Map<OrdK, K, V>>,
+        Searchable<K, V>,
+        Searchable2<K, V>
         where OrdK : struct, Ord<K>
     {
         readonly MapInternal<OrdK, K, V> value;
@@ -580,6 +582,9 @@ namespace LanguageExt
         [Pure]
         public static Map<K, V> operator -(Map<OrdK, K, V> lhs, Map<OrdK, K, V> rhs) =>
             new Map<K, V>(lhs.Value - rhs.Value);
+
+        [Pure]
+        public IEnumerable<V> Find2(K key) => Find(key);
 
         [Pure]
         public override bool Equals(object obj) =>

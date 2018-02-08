@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Collections;
+using LanguageExt.TypeClasses;
 
 namespace LanguageExt
 {
@@ -35,7 +36,8 @@ namespace LanguageExt
         IOptional,
         IEquatable<Option<A>>,
         IComparable<Option<A>>,
-        ISerializable
+        ISerializable,
+        SearchResult<A>
     {
         readonly OptionData<A> data;
 

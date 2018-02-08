@@ -5,6 +5,7 @@ using static LanguageExt.Map;
 using Xunit;
 using System;
 using System.Linq;
+using LanguageExt.ClassInstances;
 
 namespace LanguageExtTests
 {
@@ -251,6 +252,26 @@ namespace LanguageExtTests
             Assert.True(vs.Tail.Tail.Tail.Tail.Head == 5);
             Assert.True(vs.Count == 5);
         }
+
+        [Fact]
+        public void MapsNestedFindTest()
+        {
+            var m = Map(("a", Map((1, 1.0))),("b", Map((2, 2.0))));
+
+            Assert.Equal(Some(1.0), m.FindNested<string, Map<int, double>, int, double>("a", 1).HeadOrNone());
+            Assert.Equal(Some(1.0), m.Find("a").ThenFind<Map<int,double>, int, double>(1));
+
+            // Assert.Equal(None, m.FindNested<string, Map<int, double>, int, double>("A", 1).HeadOrNone());
+        }
+
+        [Fact]
+        public void MapsNestedOrdFindTest()
+        {
+            var m = Map<OrdStringOrdinalIgnoreCase, string, Map<int, double>>(("a", Map((1, 1.0))), ("b", Map((2, 2.0))));
+
+            Assert.Equal(Some(1.0), m.FindNested<string, Map<int, double>, int, double>("A", 1).HeadOrNone());
+        }
+
 
         [Fact]
         public void MapUnionTest1()
