@@ -199,5 +199,16 @@ namespace LanguageExt.Tests
 
         //    taskOpt = optTask.Sequence();
         //}
+
+        [Fact]
+        public async Task Equality()
+        {
+            var x = SomeAsync(3);
+            var y = SomeAsync(3);
+
+            Assert.Equal(x, y);
+            Assert.True(x.Equals(y));
+            // Assert.True(x == y);
+        }
     }
 }
