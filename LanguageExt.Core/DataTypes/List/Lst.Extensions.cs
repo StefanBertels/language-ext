@@ -366,6 +366,19 @@ public static class ListExtensions
         LanguageExt.List.map(list, map);
 
     /// <summary>
+    /// Projects the tuple values in the enumerable using a map function into a new enumerable (Select in LINQ).
+    /// </summary>
+    /// <typeparam name="K">Type of Enumerable item's first component (e.g. Key)</typeparam>
+    /// <typeparam name="V">Type of Enumerable item's second component (e.g. Value)</typeparam>
+    /// <typeparam name="R">Return enumerable item type</typeparam>
+    /// <param name="list">Enumerable to map</param>
+    /// <param name="map">Map function</param>
+    /// <returns>Mapped enumerable</returns>
+    [Pure]
+    public static IEnumerable<R> Map<K, V, R>(this IEnumerable<(K Key, V Value)> list, Func<int, K, V, R> map) =>
+        LanguageExt.List.map(list, (i, kvp) => map(i, kvp.Key, kvp.Value));
+
+    /// <summary>
     /// Partial application map
     /// </summary>
     [Pure]
@@ -819,6 +832,16 @@ public static class ListExtensions
     /// <returns>Unit</returns>
     public static Unit Iter<T>(this IEnumerable<T> list, Action<int, T> action) =>
         LanguageExt.List.iter(list, action);
+
+    /// <summary>
+    /// Invokes an action for each tuple in the enumerable in order
+    /// </summary>
+    /// <typeparam name="T">Enumerable item type</typeparam>
+    /// <param name="list">Enumerable to iterate</param>
+    /// <param name="action">Action to invoke with each tuple</param>
+    /// <returns>Unit</returns>
+    public static Unit Iter<K, V>(this IEnumerable<(K Key,V Value)> list, Action<int, K, V> action) =>
+        LanguageExt.List.iter(list, (i, kvp) => action(i, kvp.Key, kvp.Value));
 
     /// <summary>
     /// Iterate each item in the enumerable in order (consume items)
